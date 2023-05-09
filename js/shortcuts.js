@@ -42,8 +42,11 @@
         shouldActivateSearch = !isInputOrModifierActive && (
           (options.activateSearch === true && isPrintable) ||
           (options.activateSearch !== false && keyPressed === options.activateSearch) ||
-          (options.navigateWithArrows && (event.keyCode === KEYS.LEFT || event.keyCode === KEYS.RIGHT))
-        ),
+          (options.navigateWithArrows && event.keyCode === KEYS.LEFT)
+          ),
+
+        shouldActivateSearchLeft = !isInputOrModifierActive &&
+          (options.navigateWithArrows && event.keyCode === KEYS.RIGHT),
 
         shouldActivateSearchAndHighlightText = !isInputOrModifierActive && options.selectTextInSearchbox && keyPressed === KEYS.ESC;
 
@@ -59,6 +62,9 @@
         const searchBoxLength = searchBox.value.length;
         searchBox.focus();
         searchBox.setSelectionRange(searchBoxLength, searchBoxLength);
+      } else if (shouldActivateSearchLeft) {
+        searchBox.focus();
+        searchBox.setSelectionRange(0, 0);
       } else if (shouldActivateSearchAndHighlightText) {
         window.scrollTo(0, 0);
         searchBox.focus();
